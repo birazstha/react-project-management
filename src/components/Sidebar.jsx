@@ -10,9 +10,10 @@ const SideBarDiv = styled.div`
   color: white;
   background-color: #222121;
 `;
+
 const Button = styled.button`
   padding: 6px;
-  color: #e3e3e3;
+  color: #fdfdfd;
   background: #898484;
   border-radius: 5px;
   margin-top: 2rem;
@@ -20,8 +21,8 @@ const Button = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-    background: #b3acac;
-    color: #e3e3e3;
+    background: #757575;
+    color: #fdfdfd;
     box-shadow: 0 0 10px rgba(160, 160, 160, 0.3);
   }
 `;
@@ -34,14 +35,16 @@ const SidebarTitle = styled.p`
 `;
 
 const Tabs = styled.span`
+  cursor: pointer;
   display: flex;
   width: 100%;
   text-align: center;
   margin-top: 10px;
   padding: 5px;
-  background: #f7f7f7;
-  color: #424242;
+  background: ${({ $isActive }) => ($isActive == "true" ? "white" : "")};
+  color: ${({ $isActive }) => ($isActive == "true" ? "black" : "")};
 `;
+
 const TabDiv = styled.div`
   margin-top: 2rem;
   display: flex;
@@ -49,7 +52,7 @@ const TabDiv = styled.div`
   flex-direction: column;
 `;
 
-export default function Sidebar() {
+export default function Sidebar({ tabs }) {
   return (
     <>
       <SideBarDiv>
@@ -57,8 +60,11 @@ export default function Sidebar() {
         <Button>Add Project</Button>
 
         <TabDiv>
-          <Tabs>Learning React</Tabs>
-          <Tabs>Mastering React</Tabs>
+          {tabs.map((tab, index) => (
+            <Tabs key={index} $isActive={index === 0 ? "true" : "false"}>
+              {tab}
+            </Tabs>
+          ))}
         </TabDiv>
       </SideBarDiv>
     </>
