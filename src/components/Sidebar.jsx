@@ -1,30 +1,16 @@
 import { styled } from "styled-components";
+import Button from "./UI/Button";
+import { forwardRef } from "react";
 
 const SideBarDiv = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 200px;
+  width: 250px;
   height: 100vh;
   padding: 10px;
   color: white;
   background-color: #222121;
-`;
-
-const Button = styled.button`
-  padding: 6px;
-  color: #fdfdfd;
-  background: #898484;
-  border-radius: 5px;
-  margin-top: 2rem;
-  font-weight: bolder;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: #757575;
-    color: #fdfdfd;
-    box-shadow: 0 0 10px rgba(160, 160, 160, 0.3);
-  }
 `;
 
 const SidebarTitle = styled.p`
@@ -32,6 +18,7 @@ const SidebarTitle = styled.p`
   font-weight: bold;
   text-transform: uppercase;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 `;
 
 const Tabs = styled.span`
@@ -52,21 +39,24 @@ const TabDiv = styled.div`
   flex-direction: column;
 `;
 
-export default function Sidebar({ tabs }) {
+const Sidebar = forwardRef(function Sidebar({ tabs }, ref) {
   return (
     <>
       <SideBarDiv>
         <SidebarTitle>Your Projects</SidebarTitle>
-        <Button>Add Project</Button>
+        <Button onClick={ref}>+Add Project</Button>
 
         <TabDiv>
-          {tabs.map((tab, index) => (
-            <Tabs key={index} $isActive={index === 0 ? "true" : "false"}>
-              {tab}
-            </Tabs>
-          ))}
+          {tabs &&
+            tabs.map((tab, index) => (
+              <Tabs key={index} $isActive={index === 0 ? "true" : "false"}>
+                {tab}
+              </Tabs>
+            ))}
         </TabDiv>
       </SideBarDiv>
     </>
   );
-}
+});
+
+export default Sidebar;
