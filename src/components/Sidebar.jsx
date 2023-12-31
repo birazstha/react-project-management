@@ -39,7 +39,7 @@ const TabDiv = styled.div`
   flex-direction: column;
 `;
 
-const Sidebar = forwardRef(function Sidebar({ tabs }, ref) {
+const Sidebar = forwardRef(function Sidebar({ projects }, ref) {
   return (
     <>
       <SideBarDiv>
@@ -47,10 +47,10 @@ const Sidebar = forwardRef(function Sidebar({ tabs }, ref) {
         <Button onClick={ref}>+Add Project</Button>
 
         <TabDiv>
-          {tabs &&
-            tabs.map((tab, index) => (
+          {projects &&
+            projects.map((project, index) => (
               <Tabs key={index} $isActive={index === 0 ? "true" : "false"}>
-                {tab}
+                {project.title}
               </Tabs>
             ))}
         </TabDiv>

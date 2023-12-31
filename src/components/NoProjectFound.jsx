@@ -1,5 +1,6 @@
 import Button from "./UI/Button";
 import { styled } from "styled-components";
+import { forwardRef } from "react";
 
 const MainDiv = styled.div`
   height: 100vh;
@@ -9,14 +10,17 @@ const MainDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
-export default function NoProjectFound() {
+
+const NoProjectFound = forwardRef(function NoProjectFound({}, ref) {
   return (
     <>
       <MainDiv>
         <p>No Projects Found</p>
         <p>Select a project or get started with a new one.</p>
-        <Button>Create a new project</Button>
+        <Button onClick={ref}>Create a new project</Button>
       </MainDiv>
     </>
   );
-}
+});
+
+export default NoProjectFound;

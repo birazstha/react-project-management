@@ -10,17 +10,29 @@ const MainContainer = styled.div`
 `;
 
 function App() {
-  const [tabs, setTabs] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [isNewProject, setNewProject] = useState(false);
 
   function handleNewProject() {
     setNewProject(true);
   }
 
+  function newData(formData) {
+    setProjects((prevData) => [...prevData, formData]);
+  }
+
   return (
     <MainContainer>
-      <Sidebar tabs={tabs} ref={handleNewProject} />
-      <Content content={isNewProject ? <NewProject /> : <NoProjectFound />} />
+      <Sidebar projects={projects} ref={handleNewProject} />
+      <Content
+        content={
+          isNewProject ? (
+            <NewProject forwardData={newData} />
+          ) : (
+            <NoProjectFound ref={handleNewProject} />
+          )
+        }
+      />
     </MainContainer>
   );
 }

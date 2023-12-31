@@ -34,7 +34,7 @@ export default function Input({ labelTitle, name, isTextarea, ...props }) {
       <InputGroup>
         <Label htmlFor="">{labelTitle}</Label>
         {isTextarea ? (
-          <Textarea cols="5" rows="5" placeholder={labelTitle}></Textarea>
+          <Textarea cols="5" rows="5" {...props} placeholder={labelTitle}></Textarea>
         ) : (
           <InputField
             id={name}
