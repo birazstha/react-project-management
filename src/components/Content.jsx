@@ -6,7 +6,7 @@ import ProjectDetail from './ProjectDetails'
 const ContentDiv = styled.div`
   padding: 2rem;
   width: 100%;
-  background-color: #d4d4d4;
+  background-color: #e2e2e2;
 `
 
 export default function Content({ children }) {

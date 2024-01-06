@@ -23,15 +23,15 @@ const Description = styled.p`
   margin-top: 2rem;
 `
 
-export default function ProjectDetails({ title, dueDate, description }) {
+export default function ProjectDetails({ project }) {
   return (
     <>
       <TitleDiv>
-        <Title>{title}</Title>
+        <Title>{project.title}</Title>
         <Button>Delete</Button>
       </TitleDiv>
-      <DueDate>{dueDate}</DueDate>
-      <Description>{description}</Description>
+      <DueDate>{project.dueDate}</DueDate>
+      <Description>{project.description}</Description>
       <hr />
     </>
   )

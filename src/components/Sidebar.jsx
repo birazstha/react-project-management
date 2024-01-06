@@ -39,7 +39,15 @@ const TabDiv = styled.div`
   flex-direction: column;
 `
 
-export default function Sidebar({ projects, addNewProject }) {
+export default function Sidebar({
+  projects,
+  addNewProject,
+  selectedProjectId,
+}) {
+  function projectId(id) {
+    selectedProjectId(id)
+  }
+
   return (
     <>
       <SideBarDiv>
@@ -49,7 +57,11 @@ export default function Sidebar({ projects, addNewProject }) {
         <TabDiv>
           {projects &&
             projects.map((project, index) => (
-              <Tabs key={index} $isActive={index === 0 ? 'true' : 'false'}>
+              <Tabs
+                onClick={() => projectId(project.id)}
+                key={index}
+                $isActive={index === 0 ? 'true' : 'false'}
+              >
                 {project.title}
               </Tabs>
             ))}

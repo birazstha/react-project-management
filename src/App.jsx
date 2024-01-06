@@ -4,19 +4,20 @@ import { styled } from 'styled-components'
 import Sidebar from './components/Sidebar'
 import NoProjectFound from './components/NoProjectFound'
 import NewProject from './components/NewProject'
+import ProjectDetails from './components/ProjectDetails'
 
 const MainContainer = styled.div`
   display: flex;
 `
 
 function App() {
-  const [projects, setProjects] = useState({
+  const [projectData, setProjectData] = useState({
     selectedProjectId: undefined,
     projects: [],
   })
 
   function newData(formData) {
-    setProjects((prevProject) => {
+    setProjectData((prevProject) => {
       const newProject = {
         ...formData,
         id: Math.random(),
@@ -30,27 +31,43 @@ function App() {
   }
 
   function addNewProject() {
-    setProjects((prevData) => {
+    setProjectData((prevData) => {
       return {
         ...prevData,
         selectedProjectId: null,
       }
     })
-
-    console.log(projects)
   }
- 
+
+  function projectId(id) {
+    setProjectData((prevData) => {
+      return {
+        ...prevData,
+        selectedProjectId: id,
+      }
+    })
+  }
+
   let content
 
-  if (projects.selectedProjectId === null) {
+  if (projectData.selectedProjectId === null) {
     content = <NewProject forwardData={newData} />
-  } else if (projects.selectedProjectId === undefined) {
+  } else if (projectData.selectedProjectId === undefined) {
     content = <NoProjectFound addNewProject={addNewProject} />
+  } else if (projectData.selectedProjectId != null) {
+    const project = projectData.projects.find(
+      (task) => task.id === projectData.selectedProjectId,
+    )
+    content = <ProjectDetails project={project} />
   }
 
   return (
     <MainContainer>
-      <Sidebar projects={projects.projects} addNewProject={addNewProject} />
+      <Sidebar
+        projects={projectData.projects}
+        addNewProject={addNewProject}
+        selectedProjectId={projectId}
+      />
       <Content>{content}</Content>
     </MainContainer>
   )
