@@ -1,40 +1,59 @@
-import { useState } from "react";
-import Content from "./components/Content";
-import { styled } from "styled-components";
-import Sidebar from "./components/Sidebar";
-import NoProjectFound from "./components/NoProjectFound";
-import NewProject from "./components/NewProject";
+import { useState } from 'react'
+import Content from './components/Content'
+import { styled } from 'styled-components'
+import Sidebar from './components/Sidebar'
+import NoProjectFound from './components/NoProjectFound'
+import NewProject from './components/NewProject'
 
 const MainContainer = styled.div`
   display: flex;
-`;
+`
 
 function App() {
-  const [projects, setProjects] = useState([]);
-  const [isNewProject, setNewProject] = useState(false);
-
-  function handleNewProject() {
-    setNewProject(true);
-  }
+  const [projects, setProjects] = useState({
+    selectedProjectId: undefined,
+    projects: [],
+  })
 
   function newData(formData) {
-    setProjects((prevData) => [...prevData, formData]);
+    setProjects((prevProject) => {
+      const newProject = {
+        ...formData,
+        id: Math.random(),
+      }
+
+      return {
+        ...prevProject,
+        projects: [...prevProject.projects, newProject],
+      }
+    })
+  }
+
+  function addNewProject() {
+    setProjects((prevData) => {
+      return {
+        ...prevData,
+        selectedProjectId: null,
+      }
+    })
+
+    console.log(projects)
+  }
+ 
+  let content
+
+  if (projects.selectedProjectId === null) {
+    content = <NewProject forwardData={newData} />
+  } else if (projects.selectedProjectId === undefined) {
+    content = <NoProjectFound addNewProject={addNewProject} />
   }
 
   return (
     <MainContainer>
-      <Sidebar projects={projects} ref={handleNewProject} />
-      <Content
-        content={
-          isNewProject ? (
-            <NewProject forwardData={newData} />
-          ) : (
-            <NoProjectFound ref={handleNewProject} />
-          )
-        }
-      />
+      <Sidebar projects={projects.projects} addNewProject={addNewProject} />
+      <Content>{content}</Content>
     </MainContainer>
-  );
+  )
 }
 
-export default App;
+export default App

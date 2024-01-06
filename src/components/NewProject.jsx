@@ -1,37 +1,64 @@
-import { styled } from "styled-components";
-import Button from "./UI/Button";
-import Input from "./UI/Input";
-import { useState, forwardRef } from "react";
+import { forwardRef, useState, useRef } from 'react'
+import { styled } from 'styled-components'
+import Button from './UI/Button'
+import Input from './UI/Input'
 
 const ButtonGroup = styled.div`
   display: flex;
   justify-content: end;
-`;
+`
 
-const NewProject = forwardRef(function NewProject({ forwardData }, submitForm) {
+const NewProject = forwardRef(function NewProject({ forwardData }, ref) {
+  const title = useRef()
+  const dueDate = useRef()
+  const description = useRef()
+
   const [data, setData] = useState({
-    title: "",
-    dueDate: "",
-    description: "",
-  });
+    id: null,
+    title: '',
+    dueDate: '',
+    description: '',
+  })
 
-  function handSubmittedForm(e) {
-    e.preventDefault();
-    if (forwardData) {
-      forwardData(data);
-    }
+  const initialErrors = {
+    errTitle: false,
+    errDueDate: false,
+    errDescription: false,
   }
 
-  function storeValue(title, value) {
-    setData({
-      ...data,
-      [title]: value,
-    });
+  const [errors, setErrors] = useState(initialErrors)
+
+  function handleSubmittedForm(e) {
+    e.preventDefault()
+    const enteredTitle = title.current.value
+    const enteredDueDate = dueDate.current.value
+    const enteredDescription = description.current.value
+
+    const newErrors = {
+      errTitle: enteredTitle.trim() === '',
+      errDueDate: enteredDueDate.trim() === '',
+      errDescription: enteredDescription.trim() === '',
+    }
+
+    setErrors(newErrors)
+
+    const newData = {
+      id: Math.random(),
+      title: enteredTitle,
+      dueDate: enteredDueDate,
+      description: enteredDescription,
+    }
+
+    setData(newData)
+
+    if (!newErrors.errTitle && !newErrors.errDueDate && !newErrors.errDescription) {
+      forwardData(newData)
+    }
   }
 
   return (
     <>
-      <form action="" onSubmit={handSubmittedForm}>
+      <form onSubmit={handleSubmittedForm} ref={ref}>
         <ButtonGroup>
           <Button type="submit">Save</Button>
           <Button>Cancel</Button>
@@ -39,32 +66,34 @@ const NewProject = forwardRef(function NewProject({ forwardData }, submitForm) {
 
         {/* Title */}
         <Input
+          labelTitle="Title"
           type="text"
           name="title"
-          onChange={(e) => storeValue("title", e.target.value)}
-          labelTitle="Title"
+          isError={errors.errTitle}
+          ref={title}
         />
 
         {/* Due Date */}
         <Input
-          type="date"
-          name="due-date"
-          onChange={(e) => storeValue("dueDate", e.target.value)}
           labelTitle="Due Date"
+          type="date"
+          isError={errors.errDueDate}
+          name="dueDate"
+          ref={dueDate}
         />
 
         {/* Description */}
-
         <Input
-          type="date"
-          name="description"
           labelTitle="Description"
-          onChange={(e) => storeValue("description", e.target.value)}
+          type="text"
+          isError={errors.errDescription}
+          name="description"
+          ref={description}
           isTextarea={true}
         />
       </form>
     </>
-  );
-});
+  )
+})
 
-export default NewProject;
+export default NewProject
