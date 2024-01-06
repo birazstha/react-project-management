@@ -48,6 +48,18 @@ function App() {
     })
   }
 
+  function handleDelete(id) {
+    setProjectData((prevData) => {
+      const updatedProjects = prevData.projects.filter((item) => item.id !== id)
+
+      return {
+        ...prevData,
+        selectedProjectId: undefined,
+        projects: updatedProjects,
+      }
+    })
+  }
+
   let content
 
   if (projectData.selectedProjectId === null) {
@@ -56,9 +68,9 @@ function App() {
     content = <NoProjectFound addNewProject={addNewProject} />
   } else if (projectData.selectedProjectId != null) {
     const project = projectData.projects.find(
-      (task) => task.id === projectData.selectedProjectId,
+      (project) => project.id === projectData.selectedProjectId,
     )
-    content = <ProjectDetails project={project} />
+    content = <ProjectDetails project={project} handleDelete={handleDelete} />
   }
 
   return (
@@ -67,6 +79,7 @@ function App() {
         projects={projectData.projects}
         addNewProject={addNewProject}
         selectedProjectId={projectId}
+        activeProjectTab={projectData.selectedProjectId}
       />
       <Content>{content}</Content>
     </MainContainer>

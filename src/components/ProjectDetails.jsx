@@ -23,16 +23,26 @@ const Description = styled.p`
   margin-top: 2rem;
 `
 
-export default function ProjectDetails({ project }) {
+const LineBreak = styled.div`
+  border: 1px solid white;
+  margin-top: 1rem;
+`
+
+export default function ProjectDetails({ project, handleDelete }) {
+  function test(id) {
+    handleDelete(id)
+  }
+
   return (
     <>
       <TitleDiv>
         <Title>{project.title}</Title>
-        <Button>Delete</Button>
+        <Button onClick={() => test(project.id)}>Delete</Button>
       </TitleDiv>
       <DueDate>{project.dueDate}</DueDate>
       <Description>{project.description}</Description>
-      <hr />
+      <LineBreak />
+      <h2 className="text-2xl font-bolder mt-4 uppercase">Tasks</h2>
     </>
   )
 }

@@ -43,6 +43,7 @@ export default function Sidebar({
   projects,
   addNewProject,
   selectedProjectId,
+  activeProjectTab,
 }) {
   function projectId(id) {
     selectedProjectId(id)
@@ -60,7 +61,7 @@ export default function Sidebar({
               <Tabs
                 onClick={() => projectId(project.id)}
                 key={index}
-                $isActive={index === 0 ? 'true' : 'false'}
+                $isActive={activeProjectTab === project.id ? 'true' : 'false'}
               >
                 {project.title}
               </Tabs>
