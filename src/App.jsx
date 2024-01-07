@@ -76,6 +76,17 @@ function App() {
         tasks: [newTask, ...prevData.tasks],
       };
     });
+  }
+
+  function deleteTaskId(id) {
+    console.log(id);
+    setProjectData((prevData) => {
+      return {
+        ...prevData,
+        tasks: prevData.tasks.filter((task) => task.taskId !== id),
+      };
+    });
+
     console.log(projectData);
   }
 
@@ -98,6 +109,7 @@ function App() {
         tasks={tasks}
         handleDelete={handleDelete}
         addTask={addTask}
+        deleteTaskId={deleteTaskId}
       />
     );
   }

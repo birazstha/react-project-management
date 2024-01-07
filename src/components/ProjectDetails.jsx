@@ -34,10 +34,12 @@ export default function ProjectDetails({
   handleDelete,
   addTask,
   tasks,
+  deleteTaskId,
 }) {
   function test(id) {
     handleDelete(id);
   }
+
 
   return (
     <>
@@ -49,7 +51,7 @@ export default function ProjectDetails({
       <Description>{project.description}</Description>
       <LineBreak />
       <h2 className="text-2xl font-bolder mt-4 uppercase">Tasks</h2>
-      <Tasks addTask={addTask} tasks={tasks} />
+      <Tasks addTask={addTask} tasks={tasks} deleteTaskId={deleteTaskId} />
     </>
   );
 }
