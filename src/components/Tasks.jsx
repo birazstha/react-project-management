@@ -35,8 +35,6 @@ export default function Tasks({ addTask, tasks, deleteTaskId }) {
     }
   }
 
-
-
   return (
     <>
       <div className="mt-3">
@@ -50,17 +48,21 @@ export default function Tasks({ addTask, tasks, deleteTaskId }) {
       )}
 
       <div className="mt-3">
-        <TaskUl>
-          {tasks &&
-            tasks.map((task, index) => (
-              <TaskList
-                key={index}
-                data={task}
-                number={index + 1}
-                deleteTaskId={deleteTaskId}
-              />
-            ))}
-        </TaskUl>
+        {tasks && tasks.length > 0 ? (
+          <TaskUl>
+            {tasks &&
+              tasks.map((task, index) => (
+                <TaskList
+                  key={index}
+                  data={task}
+                  number={index + 1}
+                  deleteTaskId={deleteTaskId}
+                />
+              ))}
+          </TaskUl>
+        ) : (
+          <span className="text-red-500">No tasks found.</span>
+        )}
       </div>
     </>
   );
