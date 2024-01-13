@@ -1,7 +1,9 @@
-import Button from './UI/Button'
-import { styled } from 'styled-components'
-import { forwardRef } from 'react'
-import Image from '../assets/no-projects.png'
+import Button from "./UI/Button";
+import { styled } from "styled-components";
+import Image from "../assets/no-projects.png";
+import { ProjectContext } from "../context/project_data_context";
+import { useContext } from "react";
+
 const MainDiv = styled.div`
   height: 85vh;
   padding: 1rem;
@@ -9,9 +11,10 @@ const MainDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
+`;
 
-export default function NoProjectFound({ addNewProject }) {
+export default function NoProjectFound() {
+  const { addNewProject } = useContext(ProjectContext);
   return (
     <>
       <MainDiv>
@@ -21,5 +24,5 @@ export default function NoProjectFound({ addNewProject }) {
         <Button onClick={addNewProject}>Create a new project</Button>
       </MainDiv>
     </>
-  )
+  );
 }

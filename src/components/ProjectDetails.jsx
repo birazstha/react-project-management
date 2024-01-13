@@ -1,6 +1,8 @@
 import { styled } from "styled-components";
 import Button from "./UI/Button";
 import Tasks from "./Tasks";
+import { ProjectContext } from "../context/project_data_context";
+import { useContext } from "react";
 
 const TitleDiv = styled.div`
   display: flex;
@@ -29,29 +31,20 @@ const LineBreak = styled.div`
   margin-top: 1rem;
 `;
 
-export default function ProjectDetails({
-  project,
-  handleDelete,
-  addTask,
-  tasks,
-  deleteTaskId,
-}) {
-  function test(id) {
-    handleDelete(id);
-  }
-
+export default function ProjectDetails() {
+  const { handleDelete, project } = useContext(ProjectContext);
 
   return (
     <>
       <TitleDiv>
         <Title>{project.title}</Title>
-        <Button onClick={() => test(project.id)}>Delete</Button>
+        <Button onClick={() => handleDelete(project.id)}>Delete</Button>
       </TitleDiv>
       <DueDate>{project.dueDate}</DueDate>
       <Description>{project.description}</Description>
       <LineBreak />
       <h2 className="text-2xl font-bolder mt-4 uppercase">Tasks</h2>
-      <Tasks addTask={addTask} tasks={tasks} deleteTaskId={deleteTaskId} />
+      <Tasks />
     </>
   );
 }

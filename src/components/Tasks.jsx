@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
 import Button from "./UI/Button";
 import TaskList from "./TaskList";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProjectContext } from "../context/project_data_context";
 
 const TaskInput = styled.input`
   outline: none;
@@ -15,9 +16,11 @@ const TaskUl = styled.ul`
   margin-bottom: 1rem;
 `;
 
-export default function Tasks({ addTask, tasks, deleteTaskId }) {
+export default function Tasks() {
   const [enteredTask, setEnteredTask] = useState();
   const [isError, setIsError] = useState(false);
+
+  const { tasks, addTask } = useContext(ProjectContext);
 
   function handleInput(event) {
     setIsError(false);
@@ -52,12 +55,7 @@ export default function Tasks({ addTask, tasks, deleteTaskId }) {
           <TaskUl>
             {tasks &&
               tasks.map((task, index) => (
-                <TaskList
-                  key={index}
-                  data={task}
-                  number={index + 1}
-                  deleteTaskId={deleteTaskId}
-                />
+                <TaskList key={index} data={task} number={index + 1} />
               ))}
           </TaskUl>
         ) : (

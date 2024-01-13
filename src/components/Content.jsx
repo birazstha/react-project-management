@@ -1,18 +1,18 @@
-import { styled } from 'styled-components'
-import NewProject from './NewProject'
-import NoProjectFound from './NoProjectFound'
-import ProjectDetail from './ProjectDetails'
+import { styled } from "styled-components";
+import { ProjectContext } from "../context/project_data_context";
+import { useContext } from "react";
 
 const ContentDiv = styled.div`
   padding: 2rem;
   width: 100%;
   background-color: #e2e2e2;
-`
+`;
 
-export default function Content({ children }) {
+export default function Content() {
+  const { content } = useContext(ProjectContext);
   return (
     <>
-      <ContentDiv>{children}</ContentDiv>
+      <ContentDiv>{content}</ContentDiv>
     </>
-  )
+  );
 }

@@ -1,6 +1,7 @@
-import { styled } from 'styled-components'
-import Button from './UI/Button'
-import { forwardRef } from 'react'
+import { styled } from "styled-components";
+import Button from "./UI/Button";
+import { useContext } from "react";
+import { ProjectContext } from "../context/project_data_context";
 
 const SideBarDiv = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const SideBarDiv = styled.div`
   padding: 10px;
   color: white;
   background-color: #222121;
-`
+`;
 
 const SidebarTitle = styled.p`
   font-size: 20px;
@@ -19,7 +20,7 @@ const SidebarTitle = styled.p`
   text-transform: uppercase;
   margin-top: 2rem;
   margin-bottom: 2rem;
-`
+`;
 
 const Tabs = styled.span`
   cursor: pointer;
@@ -28,26 +29,19 @@ const Tabs = styled.span`
   text-align: center;
   margin-top: 10px;
   padding: 5px;
-  background: ${({ $isActive }) => ($isActive == 'true' ? 'white' : '')};
-  color: ${({ $isActive }) => ($isActive == 'true' ? 'black' : '')};
-`
+  background: ${({ $isActive }) => ($isActive == "true" ? "white" : "")};
+  color: ${({ $isActive }) => ($isActive == "true" ? "black" : "")};
+`;
 
 const TabDiv = styled.div`
   margin-top: 2rem;
   display: flex;
   width: 100%;
   flex-direction: column;
-`
+`;
 
-export default function Sidebar({
-  projects,
-  addNewProject,
-  selectedProjectId,
-  activeProjectTab,
-}) {
-  function projectId(id) {
-    selectedProjectId(id)
-  }
+export default function Sidebar({ activeProjectTab }) {
+  const { addNewProject, projects, projectId } = useContext(ProjectContext);
 
   return (
     <>
@@ -61,7 +55,7 @@ export default function Sidebar({
               <Tabs
                 onClick={() => projectId(project.id)}
                 key={index}
-                $isActive={activeProjectTab === project.id ? 'true' : 'false'}
+                $isActive={activeProjectTab === project.id ? "true" : "false"}
               >
                 {project.title}
               </Tabs>
@@ -69,5 +63,5 @@ export default function Sidebar({
         </TabDiv>
       </SideBarDiv>
     </>
-  )
+  );
 }
