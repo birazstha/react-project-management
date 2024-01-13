@@ -1,48 +1,81 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useReducer } from "react";
 import NoProjectFound from "../components/NoProjectFound";
 import NewProject from "../components/NewProject";
 import ProjectDetails from "../components/ProjectDetails";
 
-export const ProjectContext = createContext({
-  addTask: () => {},
-});
+export const ProjectContext = createContext();
+
+function reducer(state, action) {
+  if (action.type === "NEW_DATA") {
+    const newProject = {
+      ...action.payload,
+      id: Math.random(),
+    };
+    return {
+      ...state,
+      projects: [...state.projects, newProject],
+    };
+  }
+
+  if (action.type === "ADD_NEW_PROJECT") {
+    return {
+      ...state,
+      selectedProjectId: null,
+    };
+  }
+
+  if (action.type === "SELECTED_PROJECT") {
+    return {
+      ...state,
+      selectedProjectId: action.payload,
+    };
+  }
+
+  if (action.type === "ADD_TASK") {
+    const newTask = {
+      title: action.payload,
+      projectId: state.selectedProjectId,
+      taskId: Math.random(),
+    };
+
+    return {
+      ...state,
+      tasks: [newTask, ...state.tasks],
+    };
+  }
+
+  if (action.type === "DELETE_TASK") {
+    return {
+      ...state,
+      tasks: state.tasks.filter((task) => task.taskId !== action.id),
+    };
+  }
+}
 
 export default function ProjectContextProvider({ children }) {
-  const [projectData, setProjectData] = useState({
+  const [state, dispatch] = useReducer(reducer, {
     selectedProjectId: undefined,
     projects: [],
     tasks: [],
   });
 
   function newData(formData) {
-    setProjectData((prevProject) => {
-      const newProject = {
-        ...formData,
-        id: Math.random(),
-      };
-
-      return {
-        ...prevProject,
-        projects: [...prevProject.projects, newProject],
-      };
+    dispatch({
+      type: "NEW_DATA",
+      payload: formData,
     });
   }
 
   function addNewProject() {
-    setProjectData((prevData) => {
-      return {
-        ...prevData,
-        selectedProjectId: null,
-      };
+    dispatch({
+      type: "ADD_NEW_PROJECT",
     });
   }
 
-  function projectId(id) {
-    setProjectData((prevData) => {
-      return {
-        ...prevData,
-        selectedProjectId: id,
-      };
+  function selectedProject(id) {
+    dispatch({
+      type: "SELECTED_PROJECT",
+      payload: id,
     });
   }
 
@@ -61,40 +94,30 @@ export default function ProjectContextProvider({ children }) {
   }
 
   function addTask(task) {
-    setProjectData((prevData) => {
-      const newTask = {
-        title: task,
-        projectId: prevData.selectedProjectId,
-        taskId: Math.random(),
-      };
-
-      return {
-        ...prevData,
-        tasks: [newTask, ...prevData.tasks],
-      };
+    dispatch({
+      type: "ADD_TASK",
+      payload: task,
     });
   }
 
   function deleteTask(id) {
-    setProjectData((prevData) => {
-      return {
-        ...prevData,
-        tasks: prevData.tasks.filter((task) => task.taskId !== id),
-      };
+    dispatch({
+      type: "DELETE_TASK",
+      id: id,
     });
   }
 
   let content, project, task;
 
-  if (projectData.selectedProjectId === null) {
+  if (state.selectedProjectId === null) {
     content = <NewProject forwardData={newData} />;
-  } else if (projectData.selectedProjectId === undefined) {
+  } else if (state.selectedProjectId === undefined) {
     content = <NoProjectFound />;
-  } else if (projectData.selectedProjectId != null) {
-    project = projectData.projects.find(
-      (project) => project.id === projectData.selectedProjectId
+  } else if (state.selectedProjectId != null) {
+    project = state.projects.find(
+      (project) => project.id === state.selectedProjectId
     );
-    task = projectData.tasks.filter((task) => task.projectId === project.id);
+    task = state.tasks.filter((task) => task.projectId === project.id);
     content = <ProjectDetails />;
   }
 
@@ -102,9 +125,9 @@ export default function ProjectContextProvider({ children }) {
     addNewProject: addNewProject,
     content: content,
     project: project,
-    projects: projectData.projects,
+    projects: state.projects,
     tasks: task,
-    projectId: projectId,
+    selectedProject: selectedProject,
     handleDelete: handleDelete,
     addTask: addTask,
     deleteTask: deleteTask,

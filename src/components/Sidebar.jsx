@@ -41,7 +41,8 @@ const TabDiv = styled.div`
 `;
 
 export default function Sidebar({ activeProjectTab }) {
-  const { addNewProject, projects, projectId } = useContext(ProjectContext);
+  const { addNewProject, projects, selectedProject } =
+    useContext(ProjectContext);
 
   return (
     <>
@@ -53,7 +54,7 @@ export default function Sidebar({ activeProjectTab }) {
           {projects &&
             projects.map((project, index) => (
               <Tabs
-                onClick={() => projectId(project.id)}
+                onClick={() => selectedProject(project.id)}
                 key={index}
                 $isActive={activeProjectTab === project.id ? "true" : "false"}
               >
